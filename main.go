@@ -2,25 +2,19 @@ package main
 
 import (
 	"fmt"
+	"bufio"
+	"os"
+	"strings"
 )
 
 func main(){
+	fmt.Print("Введите слова: ")
+	input := bufio.NewScanner(os.Stdin)
 
-	type Word struct{
-		Text string
-		Leght int
+	input.Scan()
+
+	result := strings.Fields(input.Text())
+	for i, word := range result {
+		fmt.Println(i, "-", word)
 	}
-
-	// массив от 65 до 90 с большими буквами
-	upcrar := [...]int{}
-	c := 0
-	for i := 65; i< 91; i++{
-		upcrar[c] = i
-		c += 1
-	}
-}
-
-func (word *Word) Normalize(srt string){
-
-
 }
