@@ -2,19 +2,42 @@ package main
 
 import (
 	"fmt"
-	"bufio"
-	"os"
-	"strings"
 )
 
+type Auto interface{
+	Drive(length int)
+}
+
+type BMW struct{
+		Year  int
+		Color string
+		Fuel int
+}
+
+type Tesla struct{
+		Year  int
+		Color string
+		Pover int
+}
+
+func (b *BMW) Drive(length int){
+	b.Fuel -= length
+	fmt.Println("BMW едет на расстояние", length, "km, осталось топлива:", b.Fuel, "л")
+}
+
+func (t *Tesla) Drive(length int){
+	t.Pover -= length
+	fmt.Println("Tesla едет на расстояние", length, "km, осталось заряда:", t.Pover, "киловатт-час")
+}
+
+func GoDrive(auto Auto, length int) {
+	auto.Drive(length)
+}
+
 func main(){
-	fmt.Print("Введите слова: ")
-	input := bufio.NewScanner(os.Stdin)
+	bmw := &BMW{Fuel: 500}
+	tesla := &Tesla{Pover: 300}
 
-	input.Scan()
-
-	result := strings.Fields(input.Text())
-	for i, word := range result {
-		fmt.Println(i, "-", word)
-	}
+	GoDrive(bmw, 130)
+	GoDrive(tesla, 170)
 }
