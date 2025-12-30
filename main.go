@@ -30,14 +30,16 @@ func (t *Tesla) Drive(length int){
 	fmt.Println("Tesla едет на расстояние", length, "km, осталось заряда:", t.Pover, "киловатт-час")
 }
 
-func GoDrive(auto Auto, length int) {
-	auto.Drive(length)
-}
-
 func main(){
-	bmw := &BMW{Fuel: 500}
-	tesla := &Tesla{Pover: 300}
+	autos := []Auto{
+		&BMW{Fuel: 500},
+		&Tesla{Pover: 300},
+	}
 
-	GoDrive(bmw, 130)
-	GoDrive(tesla, 170)
+	lengths := []int{130, 170}
+
+	for i, auto := range autos {
+		fmt.Printf("Автомобиль %d: ", i)
+		auto.Drive(lengths[i])
+	}
 }
