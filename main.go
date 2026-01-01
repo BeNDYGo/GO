@@ -1,45 +1,34 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 )
-
-type Auto interface{
-	Drive(length int)
+type User struct{
+	Name string
+	Ballance int
 }
 
-type BMW struct{
-		Year  int
-		Color string
-		Fuel int
-}
-
-type Tesla struct{
-		Year  int
-		Color string
-		Pover int
-}
-
-func (b *BMW) Drive(length int){
-	b.Fuel -= length
-	fmt.Println("BMW едет на расстояние", length, "km, осталось топлива:", b.Fuel, "л")
-}
-
-func (t *Tesla) Drive(length int){
-	t.Pover -= length
-	fmt.Println("Tesla едет на расстояние", length, "km, осталось заряда:", t.Pover, "киловатт-час")
+func Pay (user *User, usd int) error{
+	if user.Ballance - usd >= 0 {
+		user.Ballance -= usd
+		return nil
+	}
+	return errors.New("недостаточно средстав")
 }
 
 func main(){
-	autos := []Auto{
-		&BMW{Fuel: 500},
-		&Tesla{Pover: 300},
+	user1 := User{
+		Name: "Олег",
+		Ballance: 1000,
 	}
 
-	lengths := []int{130, 170}
+	pay := Pay(&user1, 150)
 
-	for i, auto := range autos {
-		fmt.Printf("Автомобиль %d: ", i)
-		auto.Drive(lengths[i])
+	if pay == nil {
+		fmt.Printf("Баланс %s: %b\n", user1.Name, user1.Ballance)
+	}else {
+		fmt.Println("недостаточно средств")
 	}
+
 }
