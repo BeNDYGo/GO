@@ -1,0 +1,45 @@
+--------------------- контекст -------------------------
+func foo(ctx context.Context){
+	for{
+		select{
+		case <- ctx.Done():
+			fmt.Println("функция foo завершилась")
+			return
+		default:
+			fmt.Println("fooooo")
+			time.Sleep(200 * time.Millisecond)
+		}
+	}
+}
+
+func boo(ctx context.Context){
+	for{
+		select{
+		case <- ctx.Done():
+			fmt.Println("boo завершилась")
+			return
+		default:
+			fmt.Println("boooooo")
+			time.Sleep(200 * time.Millisecond)
+		}
+	}
+}
+
+func main(){
+	Context1, Context1Cancel := context.WithCancel(context.Background())
+	Context2, Context2Cancel := context.WithCancel(Context1)
+
+	go foo(Context1)
+	go boo(Context2)
+
+	time.Sleep(2 * time.Second)
+
+	Context1Cancel()
+	
+	time.Sleep(2 * time.Second)
+	Context2Cancel()
+}
+
+
+
+---------------------  -------------------------
