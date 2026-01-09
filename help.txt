@@ -42,4 +42,45 @@ func main(){
 
 
 
+---------------------  Блокировка записи и чтения -------------------------
+
+
+package main
+
+import (
+	"fmt"
+	"sync"
+)
+
+var c int = 0
+var mtx sync.Mutex
+//var mtx sync.RWMutex - возможность блокировки чтения
+
+func f(wg *sync.WaitGroup){
+	defer wg.Done()
+	for i := 1 ;i <= 1000; i++{
+		mtx.Lock()
+		//mtx.RLock()       - блокировка чтения
+		c++
+		mtx.Unlock()
+		//mtx.RUnlock()
+
+	}
+}
+
+func main(){
+	wg := &sync.WaitGroup{}
+	
+	wg.Add(3)
+	go f(wg)
+	go f(wg)
+	go f(wg)
+
+	wg.Wait()
+
+	fmt.Printf("Значение i: %v ", c)
+}
+
+
+
 ---------------------  -------------------------
